@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Component } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 import "../index.css";
 
 function Counter() {
@@ -7,32 +8,42 @@ function Counter() {
     const [minutes, setMinutes] = useState(40);
     const [seconds, setSeconds] = useState(0);
 
+    const notify = () =>
+        toast(isPomodoro ? "Good Job Studying" : "Time to Lock In!", {
+            icon: '👏',
+        });
+
+
     // Set initial timer values when `isPomodoro` changes
     useEffect(() => {
         document.body.style.backgroundColor = isPomodoro ? "rgb(186, 73, 73)" : "rgb(56, 133, 138)"
 
         if (isPomodoro) {
-            setMinutes(40);
+            setMinutes(1);
             setSeconds(0);
         } else {
             setMinutes(20);
             setSeconds(0);
         }
+
         return (() => {
             document.body.style.backgroundColor = "";
         })
         
     }, [isPomodoro]);
 
+
     // Timer logic
     useEffect(() => {
         if (!isActive) return; // Do nothing if the timer is not active
-
+    
         const intervalId = setInterval(() => {
             if (minutes === 0 && seconds === 0) {
                 clearInterval(intervalId);
-                setIsActive(a => !a);
-                setIsPomodoro(p => !p);
+                setIsActive(false); // Pause the timer
+                setIsPomodoro(p => !p); // Switch mode
+                notify();
+                handleStartPause()
             } else if (seconds > 0) {
                 setSeconds(s => s - 1);
             } else {
@@ -40,9 +51,10 @@ function Counter() {
                 setSeconds(59);
             }
         }, 1000);
-
+    
         return () => clearInterval(intervalId); // Cleanup interval on dependency changes
-    }, [isActive, minutes, seconds]);
+    }, [isActive, minutes, seconds, isPomodoro]);
+    
 
     // Helper functions
     function formatTime() {
@@ -89,7 +101,10 @@ function Counter() {
                 <span>{formatTime()}</span>
             </div>
             <div className="start-button">
-                <button onClick={handleStartPause} style={{color: isPomodoro ? "rgb(186, 73, 73)": "rgb(56, 133, 138)"}}>{!isActive ? "START" : "PAUSE"}</button>
+                <button onClick={handleStartPause} style={{color: isPomodoro ? "rgb(186, 73, 73)": "rgb(56, 133, 138)"}}>
+                    {!isActive ? "START" : "PAUSE"}
+                </button>
+                <Toaster position="top-center" reverseOrder={false} />
             </div>
         </div>
     );
