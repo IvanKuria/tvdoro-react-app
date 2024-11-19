@@ -1,0 +1,104 @@
+body{
+    background-color: rgb(186, 73, 73);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: color 0.5s ease-in-out;
+}
+
+/* Header Component */
+.header-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.header{
+    font-family: "Nunito", sans-serif;
+    font-optical-sizing: auto;
+    font-weight:700;
+    font-style: normal;
+    color: rgb(255, 255, 255);
+}
+
+/* Counter component */
+.counter-title-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 20px 0px 30px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    width:25rem;
+}
+
+.titles-container{
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    margin-top: 30px;
+    gap: 20px;
+}
+
+.titles-container span{
+    font-family: "Nunito", sans-serif;
+    font-optical-sizing: auto;
+    font-weight:700;
+    font-style: normal;
+    color: rgb(255, 255, 255);
+    font-size: 1rem;
+}
+
+.titles-container button{
+    border: none;
+    margin: 0px;
+    border-radius: 4px;
+    font-family: "Nunito", sans-serif;
+    font-size: 1rem;
+    padding: 2px 12px;
+    height: 28px;
+    cursor: pointer;
+    background: none rgba(0, 0, 0, 0.15);
+    box-shadow: none;
+    color: white;
+    opacity: 1;
+    font-weight: bold;
+}
+
+.titles-container button.active-tab {
+    background: rgba(0, 0, 0, 0.35);
+}
+
+.counter-container{
+    padding: 20px 0px 30px;
+    margin-top: 20px;
+}
+
+.counter-container span{
+    font-family: "Nunito", sans-serif;
+    font-optical-sizing: auto;
+    font-weight:700;
+    font-style: normal;
+    color: rgb(255, 255, 255);
+    font-size: 7.5rem;
+}
+
+.start-button button{
+    cursor: pointer;
+    border: none;
+    margin: 20px 0px 0px;
+    padding: 0px 12px;
+    border-radius: 4px;
+    box-shadow: rgb(235, 235, 235) 0px 6px 0px;
+    font-family: "Nunito", sans-serif;
+    font-size: 22px;
+    height: 55px;
+    color: rgb(186, 73, 73);
+    font-weight: bold;
+    width: 200px;
+    background-color: white;
+    transition: color 0.5s ease-in-out;
+}
