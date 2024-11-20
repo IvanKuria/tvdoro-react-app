@@ -1,12 +1,15 @@
 import React, { useState, useEffect, Component } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import "../index.css";
+import PomodoroCounter from './PomodoroCounter';
 
 function Counter() {
     const [isPomodoro, setIsPomodoro] = useState(true);
     const [isActive, setIsActive] = useState(false);
     const [minutes, setMinutes] = useState(40);
     const [seconds, setSeconds] = useState(0);
+    const [pomodorStreakCounter, setPomodoroStreakCounter] = useState(1);
+    const [breakStreakCounter, setBreakStreakCounter] = useState(1);
 
     const notify = () =>
         toast(isPomodoro ? "Good Job Studying" : "Time to Lock In!", {
@@ -19,7 +22,7 @@ function Counter() {
         document.body.style.backgroundColor = isPomodoro ? "rgb(186, 73, 73)" : "rgb(56, 133, 138)"
 
         if (isPomodoro) {
-            setMinutes(40);
+            setMinutes(1);
             setSeconds(0);
         } else {
             setMinutes(20);
@@ -43,6 +46,7 @@ function Counter() {
                 setIsActive(false); // Pause the timer
                 setIsPomodoro(p => !p); // Switch mode
                 notify();
+                isActive ? setBreakStreakCounter(bs => bs + 1): setPomodoroStreakCounter(ps => ps + 1)
                 handleStartPause()
             } else if (seconds > 0) {
                 setSeconds(s => s - 1);
@@ -82,6 +86,7 @@ function Counter() {
 
     // Render
     return (
+        <>
         <div className="counter-title-container">
             <div className="titles-container">
                 <button 
@@ -106,7 +111,10 @@ function Counter() {
                 </button>
                 <Toaster position="top-center" reverseOrder={false} />
             </div>
+            
         </div>
+        {isActive ? <PomodoroCounter counter={pomodorStreakCounter}/>: <PomodoroCounter counter={breakStreakCounter}/>}
+        </>
     );
 }
 
