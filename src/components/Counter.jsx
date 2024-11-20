@@ -22,7 +22,7 @@ function Counter() {
         document.body.style.backgroundColor = isPomodoro ? "rgb(186, 73, 73)" : "rgb(56, 133, 138)"
 
         if (isPomodoro) {
-            setMinutes(1);
+            setMinutes(40);
             setSeconds(0);
         } else {
             setMinutes(20);

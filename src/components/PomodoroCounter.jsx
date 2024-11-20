@@ -5,7 +5,7 @@ function PomodoroCounter(props) {
   return (
     <>
         <div className="title-counter">
-            <span>{props.counter < 2 ? `Steak: ${props.counter}` : `Steaks: ${props.counter}`}</span>
+            <span>{props.counter < 2 ? `Streak: ${props.counter}` : `Streaks: ${props.counter}`}</span>
         </div>
     </>
   )
