@@ -85,6 +85,14 @@ body{
     font-size: 7.5rem;
 }
 
+.start-button {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
 .start-button button{
     cursor: pointer;
     border: none;
@@ -97,7 +105,7 @@ body{
     height: 55px;
     color: rgb(186, 73, 73);
     font-weight: bold;
-    width: 200px;
+    width: 10rem;
     background-color: white;
     transition: color 0.5s ease-in-out;
 }
@@ -118,4 +126,21 @@ body{
     margin: auto;
     color: white;
     
+}
+
+.opentiktok-container{
+    cursor: pointer;
+    border: none;
+    margin: 20px 0px 0px;
+    padding: 0px 12px;
+    border-radius: 4px;
+    box-shadow: rgb(255, 0, 80) 0px 6px 0px;
+    font-family: "Nunito", sans-serif;
+    font-size: 22px;
+    height: 55px;
+    color: black;
+    font-weight: bold;
+    width: 200px;
+    background-color:rgb(0, 242, 234);
+    transition: color 0.5s ease-in-out;
 }

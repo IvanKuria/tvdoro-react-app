@@ -1,7 +1,8 @@
 import React, { useState, useEffect, Component } from 'react';
-import toast, { Toaster } from 'react-hot-toast';
 import "../index.css";
 import PomodoroCounter from './PomodoroCounter';
+import Tabs from './Tabs';
+import StartPause from './StartPause';
 
 function Counter() {
     const [isPomodoro, setIsPomodoro] = useState(true);
@@ -21,13 +22,7 @@ function Counter() {
     useEffect(() => {
         document.body.style.backgroundColor = isPomodoro ? "rgb(186, 73, 73)" : "rgb(56, 133, 138)"
 
-        if (isPomodoro) {
-            setMinutes(40);
-            setSeconds(0);
-        } else {
-            setMinutes(20);
-            setSeconds(0);
-        }
+        handleReset(false);
 
         return (() => {
             document.body.style.backgroundColor = "";
@@ -84,36 +79,52 @@ function Counter() {
         setIsActive(false); // Stop the timer when switching modes
     }
 
-    // Render
+    function handleReset(pause=false) {
+        if (pause){
+            if (isPomodoro) {
+                setMinutes(40);
+                setSeconds(0);
+            } else {
+                setMinutes(20);
+                setSeconds(0);
+            }
+        } else {
+            if (isPomodoro) {
+                setMinutes(40);
+                setSeconds(0);
+            } else {
+                setMinutes(20);
+                setSeconds(0);
+            }
+            if (isActive) {
+                handleStartPause()
+            }
+                
+        }
+        
+    }
+
     return (
         <>
-        <div className="counter-title-container">
-            <div className="titles-container">
-                <button 
-                    onClick={handlePomodoro} 
-                    className={isPomodoro ? "active-tab" : ""}
-                >
-                    Pomodoro
-                </button>
-                <button 
-                    onClick={handleBreak} 
-                    className={!isPomodoro ? "active-tab" : ""}
-                >
-                    TV Break
-                </button>
+            <div className="counter-title-container">
+                <Tabs 
+                    pomodoroOnClick={handlePomodoro} 
+                    pomodoroClassName= {isPomodoro ? "active-tab" : ""}
+                    tikTokOnClick={handleBreak}
+                    tikTokClassName={!isPomodoro ? "active-tab" : ""}
+                />
+                <div className="counter-container">
+                    <span>{formatTime()}</span>
+                </div>
+                <StartPause 
+                    startPauseOnClick={handleStartPause}
+                    startPauseStyle = {{color: isPomodoro ? "rgb(186, 73, 73)": "rgb(56, 133, 138)"}}
+                    startPauseButtonText={!isActive ? "START" : "PAUSE"}
+                    resetOnClick={handleReset}
+                    resetStyle={{color: isPomodoro ? "rgb(186, 73, 73)": "rgb(56, 133, 138)"}}
+                />
             </div>
-            <div className="counter-container">
-                <span>{formatTime()}</span>
-            </div>
-            <div className="start-button">
-                <button onClick={handleStartPause} style={{color: isPomodoro ? "rgb(186, 73, 73)": "rgb(56, 133, 138)"}}>
-                    {!isActive ? "START" : "PAUSE"}
-                </button>
-                <Toaster position="top-center" reverseOrder={false} />
-            </div>
-            
-        </div>
-        {isActive ? <PomodoroCounter counter={pomodorStreakCounter}/>: <PomodoroCounter counter={breakStreakCounter}/>}
+            {isActive ? <PomodoroCounter counter={pomodorStreakCounter}/>: <PomodoroCounter counter={breakStreakCounter}/>}
         </>
     );
 }
