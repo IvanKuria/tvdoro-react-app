@@ -3,6 +3,7 @@ import "../index.css";
 import PomodoroCounter from './PomodoroCounter';
 import Tabs from './Tabs';
 import StartPause from './StartPause';
+import { toast } from 'react-hot-toast';
 
 function Counter() {
     const [isPomodoro, setIsPomodoro] = useState(true);
@@ -16,7 +17,6 @@ function Counter() {
         toast(isPomodoro ? "Good Job Studying" : "Time to Lock In!", {
             icon: '👏',
         });
-
 
     // Set initial timer values when `isPomodoro` changes
     useEffect(() => {
@@ -38,11 +38,10 @@ function Counter() {
         const intervalId = setInterval(() => {
             if (minutes === 0 && seconds === 0) {
                 clearInterval(intervalId);
-                setIsActive(false); // Pause the timer
+                // setIsActive(false);
                 setIsPomodoro(p => !p); // Switch mode
                 notify();
-                isActive ? setBreakStreakCounter(bs => bs + 1): setPomodoroStreakCounter(ps => ps + 1)
-                handleStartPause()
+                !isPomodoro ? setBreakStreakCounter(bs => bs + 1): setPomodoroStreakCounter(ps => ps + 1)                
             } else if (seconds > 0) {
                 setSeconds(s => s - 1);
             } else {
@@ -76,26 +75,24 @@ function Counter() {
 
     function handleBreak() {
         setIsPomodoro(false);
-        setIsActive(false); // Stop the timer when switching modes
+        // setIsActive(false); // Stop the timer when switching modes
+    }
+
+    function initalizeMinutesSeconds() {
+        if (isPomodoro) {
+            setMinutes(0);
+            setSeconds(10);
+        } else {
+            setMinutes(0);
+            setSeconds(10);
+        }
     }
 
     function handleReset(pause=false) {
         if (pause){
-            if (isPomodoro) {
-                setMinutes(40);
-                setSeconds(0);
-            } else {
-                setMinutes(20);
-                setSeconds(0);
-            }
+            initalizeMinutesSeconds()
         } else {
-            if (isPomodoro) {
-                setMinutes(40);
-                setSeconds(0);
-            } else {
-                setMinutes(20);
-                setSeconds(0);
-            }
+            initalizeMinutesSeconds()
             if (isActive) {
                 handleStartPause()
             }
@@ -124,7 +121,7 @@ function Counter() {
                     resetStyle={{color: isPomodoro ? "rgb(186, 73, 73)": "rgb(56, 133, 138)"}}
                 />
             </div>
-            {isActive ? <PomodoroCounter counter={pomodorStreakCounter}/>: <PomodoroCounter counter={breakStreakCounter}/>}
+            {isPomodoro ? <PomodoroCounter counter={pomodorStreakCounter}/>: <PomodoroCounter counter={breakStreakCounter}/>}
         </>
     );
 }

@@ -3,6 +3,7 @@ import "../index.css";
 import { Toaster } from 'react-hot-toast';
 
 function StartPause(props) {
+
   return (
     <>
       <div className="start-button">
