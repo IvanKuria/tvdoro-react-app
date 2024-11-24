@@ -1,6 +1,5 @@
 import React from 'react';
 import "../index.css";
-import { Toaster } from 'react-hot-toast';
 
 function StartPause(props) {
 
@@ -19,7 +18,6 @@ function StartPause(props) {
         >
           Reset
         </button>
-        <Toaster position="top-center" reverseOrder={false} />
       </div>
     </>
   );

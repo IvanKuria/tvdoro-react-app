@@ -17,6 +17,11 @@ function Tabs(props) {
             >
                 TikTok Break
             </button>
+            <button
+                className={props.longBreakClassName}
+            >
+                Long Break
+            </button>
         </div>
     </>
   )

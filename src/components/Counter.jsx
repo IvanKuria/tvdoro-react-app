@@ -3,24 +3,21 @@ import "../index.css";
 import PomodoroCounter from './PomodoroCounter';
 import Tabs from './Tabs';
 import StartPause from './StartPause';
-import { toast } from 'react-hot-toast';
 
 function Counter() {
     const [isPomodoro, setIsPomodoro] = useState(true);
     const [isActive, setIsActive] = useState(false);
+    const [isLongBreak, setIsLongBreak] = useState(false);
+    const [isShortBreak, setIsShortBreak] = useState(false);
     const [minutes, setMinutes] = useState(40);
     const [seconds, setSeconds] = useState(0);
-    const [pomodorStreakCounter, setPomodoroStreakCounter] = useState(1);
-    const [breakStreakCounter, setBreakStreakCounter] = useState(1);
+    const [pomodorStreakCounter, setPomodoroStreakCounter] = useState(3);
+    const [breakStreakCounter, setBreakStreakCounter] = useState(3);
 
-    const notify = () =>
-        toast(isPomodoro ? "Good Job Studying" : "Time to Lock In!", {
-            icon: '👏',
-        });
 
     // Set initial timer values when `isPomodoro` changes
     useEffect(() => {
-        document.body.style.backgroundColor = isPomodoro ? "rgb(186, 73, 73)" : "rgb(56, 133, 138)"
+        document.body.style.backgroundColor = isPomodoro ? "rgb(186, 73, 73)" : isShortBreak ? "rgb(56, 133, 138)" : "rgb(0, 0, 0)"
 
         handleReset(false);
 
@@ -28,20 +25,30 @@ function Counter() {
             document.body.style.backgroundColor = "";
         })
         
-    }, [isPomodoro]);
+    }, [isPomodoro, isShortBreak, isLongBreak]);
 
 
     // Timer logic
     useEffect(() => {
-        if (!isActive) return; // Do nothing if the timer is not active
+        if (!isActive) return;
     
         const intervalId = setInterval(() => {
             if (minutes === 0 && seconds === 0) {
-                clearInterval(intervalId);
-                // setIsActive(false);
-                setIsPomodoro(p => !p); // Switch mode
-                notify();
-                !isPomodoro ? setBreakStreakCounter(bs => bs + 1): setPomodoroStreakCounter(ps => ps + 1)                
+                clearInterval(intervalId);    
+                if (isPomodoro) {
+                    setPomodoroStreakCounter(ps => ps + 1);
+                    if ((pomodorStreakCounter) % 3 === 0) {
+                        // Transition to Long Break after 3 Pomodoros
+                        handleLongBreak();
+                    } else {
+                        // Transition to Short Break
+                        handleShortBreak();
+                    }
+                } else {
+                    setBreakStreakCounter(bs => bs + 1);
+                    // Transition back to Pomodoro after any break
+                    handlePomodoro();
+                }
             } else if (seconds > 0) {
                 setSeconds(s => s - 1);
             } else {
@@ -50,8 +57,8 @@ function Counter() {
             }
         }, 1000);
     
-        return () => clearInterval(intervalId); // Cleanup interval on dependency changes
-    }, [isActive, minutes, seconds, isPomodoro]);
+        return () => clearInterval(intervalId);
+    }, [isActive, minutes, seconds, isPomodoro, isShortBreak, isLongBreak, pomodorStreakCounter]);
     
 
     // Helper functions
@@ -66,24 +73,38 @@ function Counter() {
     // Button handlers
     function handleStartPause() {
         setIsActive(a => !a);
+        console.log("Start/pause button clicked!")
     }
 
     function handlePomodoro() {
         setIsPomodoro(true);
-        setIsActive(false); // Stop the timer when switching modes
+        setIsShortBreak(false);
+        setIsLongBreak(false);
+        // setIsActive(true); // Stop the timer when switching modes
     }
 
-    function handleBreak() {
+    function handleShortBreak() {
+        setIsShortBreak(true);
         setIsPomodoro(false);
-        // setIsActive(false); // Stop the timer when switching modes
+        setIsLongBreak(false);
+        // setIsActive(true); // Stop the timer when switching modes
+    }
+
+    function handleLongBreak() {
+        setIsLongBreak(true);
+        setIsPomodoro(false);
+        setIsShortBreak(false);
     }
 
     function initalizeMinutesSeconds() {
         if (isPomodoro) {
-            setMinutes(0);
-            setSeconds(10);
+            setMinutes(0); // Default Pomodoro time
+            setSeconds(5);
+        } else if (isLongBreak) {
+            setMinutes(0); // Default Long Break time
+            setSeconds(5);
         } else {
-            setMinutes(0);
+            setMinutes(0); // Default Short Break time
             setSeconds(10);
         }
     }
@@ -104,21 +125,22 @@ function Counter() {
     return (
         <>
             <div className="counter-title-container">
-                <Tabs 
-                    pomodoroOnClick={handlePomodoro} 
-                    pomodoroClassName= {isPomodoro ? "active-tab" : ""}
-                    tikTokOnClick={handleBreak}
-                    tikTokClassName={!isPomodoro ? "active-tab" : ""}
-                />
+            <Tabs 
+                pomodoroOnClick={handlePomodoro} 
+                pomodoroClassName={isPomodoro ? "active-tab" : ""}
+                tikTokOnClick={handleShortBreak}
+                tikTokClassName={isShortBreak ? "active-tab" : ""}
+                longBreakClassName={isLongBreak ? "long-break-tab" : ""}
+            />
                 <div className="counter-container">
                     <span>{formatTime()}</span>
                 </div>
                 <StartPause 
                     startPauseOnClick={handleStartPause}
-                    startPauseStyle = {{color: isPomodoro ? "rgb(186, 73, 73)": "rgb(56, 133, 138)"}}
+                    startPauseStyle = {{color: isPomodoro ? "rgb(186, 73, 73)": isShortBreak ? "rgb(56, 133, 138)" : "rgb(0, 0, 0)"}}
                     startPauseButtonText={!isActive ? "START" : "PAUSE"}
                     resetOnClick={handleReset}
-                    resetStyle={{color: isPomodoro ? "rgb(186, 73, 73)": "rgb(56, 133, 138)"}}
+                    resetStyle={{color: isPomodoro ? "rgb(186, 73, 73)": isShortBreak ? "rgb(56, 133, 138)" : "rgb(0, 0, 0)"}}
                 />
             </div>
             {isPomodoro ? <PomodoroCounter counter={pomodorStreakCounter}/>: <PomodoroCounter counter={breakStreakCounter}/>}
