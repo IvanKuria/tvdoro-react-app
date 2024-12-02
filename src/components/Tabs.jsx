@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from "prop-types"
 import "../index.css"
 
 function Tabs(props) {
@@ -25,6 +26,16 @@ function Tabs(props) {
         </div>
     </>
   )
+}
+
+// Proptypes
+Tabs.PropTypes = {
+    pomodoroOnClick: PropTypes.func,
+    pomodoroClassName: PropTypes.func,
+    tikTokOnClick: PropTypes.func,
+    tikTokClassName: PropTypes.func,
+    longBreakClassName: PropTypes.func,
+
 }
 
 export default Tabs

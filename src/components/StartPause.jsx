@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from "prop-types"
 import "../index.css";
 
 function StartPause(props) {
@@ -21,6 +22,14 @@ function StartPause(props) {
       </div>
     </>
   );
+}
+
+// Proptypes
+StartPause.PropTypes = {
+  startPauseOnClick: PropTypes.func,
+  startPauseStyle: PropTypes.func,
+  startPauseButtonText: PropTypes.func,
+  resetStyle: PropTypes.func,
 }
 
 export default StartPause;

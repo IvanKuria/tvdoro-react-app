@@ -11,8 +11,8 @@ function Counter() {
     const [isShortBreak, setIsShortBreak] = useState(false);
     const [minutes, setMinutes] = useState(40);
     const [seconds, setSeconds] = useState(0);
-    const [pomodorStreakCounter, setPomodoroStreakCounter] = useState(3);
-    const [breakStreakCounter, setBreakStreakCounter] = useState(3);
+    const [pomodorStreakCounter, setPomodoroStreakCounter] = useState(0);
+    const [breakStreakCounter, setBreakStreakCounter] = useState(0);
 
 
     // Set initial timer values when `isPomodoro` changes
@@ -98,14 +98,14 @@ function Counter() {
 
     function initalizeMinutesSeconds() {
         if (isPomodoro) {
-            setMinutes(0); // Default Pomodoro time
-            setSeconds(5);
+            setMinutes(50); // Default Pomodoro time
+            setSeconds(0);
         } else if (isLongBreak) {
-            setMinutes(0); // Default Long Break time
-            setSeconds(5);
+            setMinutes(30); // Default Long Break time
+            setSeconds(0);
         } else {
-            setMinutes(0); // Default Short Break time
-            setSeconds(10);
+            setMinutes(10); // Default Short Break time
+            setSeconds(0);
         }
     }
 

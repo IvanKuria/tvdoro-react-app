@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from "prop-types"
 import "../index.css"
 
 function PomodoroCounter(props) {
@@ -9,6 +10,11 @@ function PomodoroCounter(props) {
         </div>
     </>
   )
+}
+
+// Proptypes
+PomodoroCounter.PropTypes = {
+  counter: PropTypes.number,
 }
 
 export default PomodoroCounter

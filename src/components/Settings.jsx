@@ -1,9 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 import "../index.css"
 
 function Settings() {
 
-    // function to handle 
+  // [isSettingsOn, setIsSettingsOn] = useState(false)
+
+
+  // // function to handle opening settings
+  // function handleSettings() {
+
+  // }
 
   return (
     <>

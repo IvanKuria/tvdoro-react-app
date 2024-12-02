@@ -6,7 +6,7 @@ function Header() {
   return (
     <>
         <div className="header-container">
-            <h1 className="header">📺 TikTokdoro</h1>
+            <h1 className="header">TikTokdoro</h1>
             <Settings />
         </div>
         
